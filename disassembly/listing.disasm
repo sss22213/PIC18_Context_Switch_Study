@@ -1,0 +1,55 @@
+Disassembly Listing for Procedure_C
+Generated From:
+D:/project/PIC/PIC_program_C/Procedure_C/Procedure_C.X/dist/default/debug/Procedure_C.X.debug.elf
+2016/4/18 ¤U¤È 11:52:01
+
+---  D:/project/PIC/PIC_program_C/Procedure_C/Procedure_C.X/main.c  -------------------------------------
+1:             #include "main.h"
+2:             
+3:             unsigned char PC_Sav;
+4:             
+5:             void func2()
+6:             {
+7:                NOP();
+7FB6  F000     NOP
+8:                PCL=PC_Sav;
+7FB8  C010     MOVFF PC_Sav, PCL
+7FBA  FFF9     NOP
+9:             #asm
+10:               RETURN
+7FBC  0012     RETURN 0
+11:            #endasm
+12:               NOP();
+7FBE  F000     NOP
+13:               NOP();
+7FC0  F000     NOP
+14:            }
+7FC2  0012     RETURN 0
+15:            void func1()
+16:            {
+17:                int ks=6;
+7FC4  0E00     MOVLW 0x0
+7FC6  6E0F     MOVWF 0xF, ACCESS
+7FC8  0E06     MOVLW 0x6
+7FCA  6E0E     MOVWF __pcstackCOMRAM, ACCESS
+18:                PC_Sav=PCL;
+7FCC  CFF9     MOVFF PCL, PC_Sav
+7FCE  F010     NOP
+19:                NOP();
+7FD0  F000     NOP
+20:                NOP();
+7FD2  F000     NOP
+21:            }
+7FD4  0012     RETURN 0
+22:            int main()
+23:            {
+24:                func1();
+7FAA  ECE2     CALL 0x7FC4, 0
+7FAC  F03F     NOP
+25:                func2();
+7FAE  ECDB     CALL 0x7FB6, 0
+7FB0  F03F     NOP
+7FB2  EF00     GOTO 0x0
+7FB4  F000     NOP
+26:                return 0;
+27:            }
