@@ -1,9 +1,9 @@
 Version 3.2 HI-TECH Software Intermediate Code
 [v F4142 `(v ~T0 @X0 0 tf ]
 "12 core.h
-[s S402 `*F4142 1 `ui 1 `uc 1 `uc 1 `uc 1 `uc -> 12 `i ]
-[n S402 _task func count S_TOSL S_TOSH S_TOSU reg ]
-[v F4153 `(v ~T0 @X0 0 tf ]
+[s S402 `*F4142 1 `ui 1 `uc 1 `uc 1 `uc 1 `uc -> 12 `i `uc -> 128 `i ]
+[n S402 _task func count S_TOSL S_TOSH S_TOSU reg SSRAM ]
+[v F4154 `(v ~T0 @X0 0 tf ]
 "1728 C:\Program Files (x86)\Microchip\xc8\v1.33\include\pic18f4520.h
 [v _TRISA `Vuc ~T0 @X0 0 e@3986 ]
 "1949
@@ -3790,31 +3790,32 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;core.h: 19: unsigned char S_TOSH;
 [; ;core.h: 20: unsigned char S_TOSU;
 [; ;core.h: 22: unsigned char reg[12];
-[; ;core.h: 23: }task;
-"25 core.h
+[; ;core.h: 23: unsigned char SSRAM[128];
+[; ;core.h: 24: }task;
+"26 core.h
 [v _index `uc ~T0 @X0 1 e ]
 [i _index
 -> -> 0 `i `uc
 ]
-[; ;core.h: 25: unsigned char index=0;
-"26
+[; ;core.h: 26: unsigned char index=0;
+"27
 [v _tt `S402 ~T0 @X0 -> 2 `i e ]
-[; ;core.h: 26: task tt[2];
-[; ;core.h: 27: task Task_Create(void (*)(void));
-[; ;core.h: 28: void Task_Save(task* task1);
-[; ;core.h: 29: void TASK_Restore(task* task1);
-[; ;core.h: 30: void Task_Empty(void);
-[; ;core.h: 31: void TASK_Init(task* task1);
+[; ;core.h: 27: task tt[2];
+[; ;core.h: 30: task Task_Create(void (*)(void));
+[; ;core.h: 31: void Task_Save(task* task1);
+[; ;core.h: 32: void TASK_Restore(task* task1);
+[; ;core.h: 33: void Task_Empty(void);
+[; ;core.h: 34: void TASK_Init(task* task1);
 "2 core.c
-[v _Task_Create `(S402 ~T0 @X0 1 ef1`*F4153 ]
+[v _Task_Create `(S402 ~T0 @X0 1 ef1`*F4154 ]
 "3
 {
 [; ;core.c: 2: task Task_Create(void (*func1)(void))
 [; ;core.c: 3: {
 [e :U _Task_Create ]
-[v F4165 `(v ~T0 @X0 0 tf ]
+[v F4166 `(v ~T0 @X0 0 tf ]
 "2
-[v _func1 `*F4165 ~T0 @X0 1 r1 ]
+[v _func1 `*F4166 ~T0 @X0 1 r1 ]
 "3
 [f ]
 "4
@@ -3899,145 +3900,217 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _task1 `*S402 ~T0 @X0 1 r1 ]
 "30
 [f ]
-[; ;core.c: 33: task1->reg[0]=TRISA;
-"33
-[e = *U + &U . *U _task1 5 * -> -> -> 0 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux _TRISA ]
-[; ;core.c: 34: task1->reg[1]=TRISB;
-"34
-[e = *U + &U . *U _task1 5 * -> -> -> 1 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux _TRISB ]
-[; ;core.c: 35: task1->reg[2]=TRISC;
+[; ;core.c: 35: for(unsigned char j=0x00;j<0x7F;j++)
 "35
-[e = *U + &U . *U _task1 5 * -> -> -> 2 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux _TRISC ]
-[; ;core.c: 36: task1->reg[3]=TRISD;
+{
+[v _j `uc ~T0 @X0 1 a ]
+[e = _j -> -> 0 `i `uc ]
+[e $ < -> _j `i -> 127 `i 406  ]
+[e $U 407  ]
 "36
-[e = *U + &U . *U _task1 5 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux _TRISD ]
-[; ;core.c: 38: task1->reg[4]=PORTA;
+[e :U 406 ]
+[; ;core.c: 36: {
+{
+[; ;core.c: 37: task1->SSRAM[j]=*(unsigned char*)(0x00+j);
+"37
+[e = *U + &U . *U _task1 6 * -> _j `ux -> -> # *U &U . *U _task1 6 `ui `ux *U -> + -> 0 `i -> _j `i `*uc ]
 "38
-[e = *U + &U . *U _task1 5 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux _PORTA ]
-[; ;core.c: 39: task1->reg[5]=PORTB;
-"39
-[e = *U + &U . *U _task1 5 * -> -> -> 5 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux _PORTB ]
-[; ;core.c: 40: task1->reg[6]=PORTC;
-"40
-[e = *U + &U . *U _task1 5 * -> -> -> 6 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux _PORTC ]
-[; ;core.c: 41: task1->reg[7]=PORTD;
+}
+"35
+[e ++ _j -> -> 1 `i `uc ]
+[e $ < -> _j `i -> 127 `i 406  ]
+[e :U 407 ]
+"38
+}
+[; ;core.c: 38: }
+[; ;core.c: 41: task1->reg[0]=TRISA;
 "41
-[e = *U + &U . *U _task1 5 * -> -> -> 7 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux _PORTD ]
-[; ;core.c: 43: task1->reg[8]=LATA;
+[e = *U + &U . *U _task1 5 * -> -> -> 0 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux _TRISA ]
+[; ;core.c: 42: task1->reg[1]=TRISB;
+"42
+[e = *U + &U . *U _task1 5 * -> -> -> 1 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux _TRISB ]
+[; ;core.c: 43: task1->reg[2]=TRISC;
 "43
-[e = *U + &U . *U _task1 5 * -> -> -> 8 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux _LATA ]
-[; ;core.c: 44: task1->reg[9]=LATB;
+[e = *U + &U . *U _task1 5 * -> -> -> 2 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux _TRISC ]
+[; ;core.c: 44: task1->reg[3]=TRISD;
 "44
-[e = *U + &U . *U _task1 5 * -> -> -> 9 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux _LATB ]
-[; ;core.c: 45: task1->reg[10]=LATC;
-"45
-[e = *U + &U . *U _task1 5 * -> -> -> 10 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux _LATC ]
-[; ;core.c: 46: task1->reg[11]=LATD;
+[e = *U + &U . *U _task1 5 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux _TRISD ]
+[; ;core.c: 46: task1->reg[4]=PORTA;
 "46
-[e = *U + &U . *U _task1 5 * -> -> -> 11 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux _LATD ]
-[; ;core.c: 47: }
+[e = *U + &U . *U _task1 5 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux _PORTA ]
+[; ;core.c: 47: task1->reg[5]=PORTB;
 "47
+[e = *U + &U . *U _task1 5 * -> -> -> 5 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux _PORTB ]
+[; ;core.c: 48: task1->reg[6]=PORTC;
+"48
+[e = *U + &U . *U _task1 5 * -> -> -> 6 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux _PORTC ]
+[; ;core.c: 49: task1->reg[7]=PORTD;
+"49
+[e = *U + &U . *U _task1 5 * -> -> -> 7 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux _PORTD ]
+[; ;core.c: 51: task1->reg[8]=LATA;
+"51
+[e = *U + &U . *U _task1 5 * -> -> -> 8 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux _LATA ]
+[; ;core.c: 52: task1->reg[9]=LATB;
+"52
+[e = *U + &U . *U _task1 5 * -> -> -> 9 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux _LATB ]
+[; ;core.c: 53: task1->reg[10]=LATC;
+"53
+[e = *U + &U . *U _task1 5 * -> -> -> 10 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux _LATC ]
+[; ;core.c: 54: task1->reg[11]=LATD;
+"54
+[e = *U + &U . *U _task1 5 * -> -> -> 11 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux _LATD ]
+[; ;core.c: 55: }
+"55
 [e :UE 405 ]
 }
-"48
+"56
 [v _TASK_Restore `(v ~T0 @X0 1 ef1`*S402 ]
-"49
-{
-[; ;core.c: 48: void TASK_Restore(task* task1)
-[; ;core.c: 49: {
-[e :U _TASK_Restore ]
-"48
-[v _task1 `*S402 ~T0 @X0 1 r1 ]
-"49
-[f ]
-[; ;core.c: 52: TRISA=task1->reg[0];
-"52
-[e = _TRISA *U + &U . *U _task1 5 * -> -> -> 0 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux ]
-[; ;core.c: 53: TRISB=task1->reg[1];
-"53
-[e = _TRISB *U + &U . *U _task1 5 * -> -> -> 1 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux ]
-[; ;core.c: 54: TRISC=task1->reg[2];
-"54
-[e = _TRISC *U + &U . *U _task1 5 * -> -> -> 2 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux ]
-[; ;core.c: 55: TRISD=task1->reg[3];
-"55
-[e = _TRISD *U + &U . *U _task1 5 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux ]
-[; ;core.c: 57: PORTA=task1->reg[4];
 "57
-[e = _PORTA *U + &U . *U _task1 5 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux ]
-[; ;core.c: 58: PORTB=task1->reg[5];
-"58
-[e = _PORTB *U + &U . *U _task1 5 * -> -> -> 5 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux ]
-[; ;core.c: 59: PORTC=task1->reg[6];
-"59
-[e = _PORTC *U + &U . *U _task1 5 * -> -> -> 6 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux ]
-[; ;core.c: 60: PORTD=task1->reg[7];
-"60
-[e = _PORTD *U + &U . *U _task1 5 * -> -> -> 7 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux ]
-[; ;core.c: 62: LATA=task1->reg[8];
-"62
-[e = _LATA *U + &U . *U _task1 5 * -> -> -> 8 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux ]
-[; ;core.c: 63: LATB=task1->reg[9];
-"63
-[e = _LATB *U + &U . *U _task1 5 * -> -> -> 9 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux ]
-[; ;core.c: 64: LATC=task1->reg[10];
-"64
-[e = _LATC *U + &U . *U _task1 5 * -> -> -> 10 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux ]
-[; ;core.c: 65: LATD=task1->reg[11];
-"65
-[e = _LATD *U + &U . *U _task1 5 * -> -> -> 11 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux ]
-[; ;core.c: 68: }
-"68
-[e :UE 406 ]
-}
-"69
-[v _TASK_Init `(v ~T0 @X0 1 ef1`*S402 ]
-"70
 {
-[; ;core.c: 69: void TASK_Init(task* task1)
-[; ;core.c: 70: {
-[e :U _TASK_Init ]
-"69
+[; ;core.c: 56: void TASK_Restore(task* task1)
+[; ;core.c: 57: {
+[e :U _TASK_Restore ]
+"56
 [v _task1 `*S402 ~T0 @X0 1 r1 ]
-"70
+"57
 [f ]
-[; ;core.c: 73: task1->reg[0]=0x00;
+[; ;core.c: 59: for(unsigned char j=0x00;j<0x7F;j++)
+"59
+{
+[v _j `uc ~T0 @X0 1 a ]
+[e = _j -> -> 0 `i `uc ]
+[e $ < -> _j `i -> 127 `i 410  ]
+[e $U 411  ]
+"60
+[e :U 410 ]
+[; ;core.c: 60: {
+{
+[; ;core.c: 61: *(unsigned char*)(0x00+j)=task1->SSRAM[j];
+"61
+[e = *U -> + -> 0 `i -> _j `i `*uc *U + &U . *U _task1 6 * -> _j `ux -> -> # *U &U . *U _task1 6 `ui `ux ]
+"62
+}
+"59
+[e ++ _j -> -> 1 `i `uc ]
+[e $ < -> _j `i -> 127 `i 410  ]
+[e :U 411 ]
+"62
+}
+[; ;core.c: 62: }
+[; ;core.c: 68: TRISA=task1->reg[0];
+"68
+[e = _TRISA *U + &U . *U _task1 5 * -> -> -> 0 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux ]
+[; ;core.c: 69: TRISB=task1->reg[1];
+"69
+[e = _TRISB *U + &U . *U _task1 5 * -> -> -> 1 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux ]
+[; ;core.c: 70: TRISC=task1->reg[2];
+"70
+[e = _TRISC *U + &U . *U _task1 5 * -> -> -> 2 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux ]
+[; ;core.c: 71: TRISD=task1->reg[3];
+"71
+[e = _TRISD *U + &U . *U _task1 5 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux ]
+[; ;core.c: 73: PORTA=task1->reg[4];
 "73
-[e = *U + &U . *U _task1 5 * -> -> -> 0 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux -> -> 0 `i `uc ]
-[; ;core.c: 74: task1->reg[1]=0x00;
+[e = _PORTA *U + &U . *U _task1 5 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux ]
+[; ;core.c: 74: PORTB=task1->reg[5];
 "74
-[e = *U + &U . *U _task1 5 * -> -> -> 1 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux -> -> 0 `i `uc ]
-[; ;core.c: 75: task1->reg[2]=0x00;
+[e = _PORTB *U + &U . *U _task1 5 * -> -> -> 5 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux ]
+[; ;core.c: 75: PORTC=task1->reg[6];
 "75
-[e = *U + &U . *U _task1 5 * -> -> -> 2 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux -> -> 0 `i `uc ]
-[; ;core.c: 76: task1->reg[3]=0x00;
+[e = _PORTC *U + &U . *U _task1 5 * -> -> -> 6 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux ]
+[; ;core.c: 76: PORTD=task1->reg[7];
 "76
-[e = *U + &U . *U _task1 5 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux -> -> 0 `i `uc ]
-[; ;core.c: 78: task1->reg[4]=0x00;
+[e = _PORTD *U + &U . *U _task1 5 * -> -> -> 7 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux ]
+[; ;core.c: 78: LATA=task1->reg[8];
 "78
-[e = *U + &U . *U _task1 5 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux -> -> 0 `i `uc ]
-[; ;core.c: 79: task1->reg[5]=0x00;
+[e = _LATA *U + &U . *U _task1 5 * -> -> -> 8 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux ]
+[; ;core.c: 79: LATB=task1->reg[9];
 "79
-[e = *U + &U . *U _task1 5 * -> -> -> 5 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux -> -> 0 `i `uc ]
-[; ;core.c: 80: task1->reg[6]=0x00;
+[e = _LATB *U + &U . *U _task1 5 * -> -> -> 9 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux ]
+[; ;core.c: 80: LATC=task1->reg[10];
 "80
-[e = *U + &U . *U _task1 5 * -> -> -> 6 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux -> -> 0 `i `uc ]
-[; ;core.c: 81: task1->reg[7]=0x00;
+[e = _LATC *U + &U . *U _task1 5 * -> -> -> 10 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux ]
+[; ;core.c: 81: LATD=task1->reg[11];
 "81
-[e = *U + &U . *U _task1 5 * -> -> -> 7 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux -> -> 0 `i `uc ]
-[; ;core.c: 83: task1->reg[8]=0x00;
-"83
-[e = *U + &U . *U _task1 5 * -> -> -> 8 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux -> -> 0 `i `uc ]
-[; ;core.c: 84: task1->reg[9]=0x00;
+[e = _LATD *U + &U . *U _task1 5 * -> -> -> 11 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux ]
+[; ;core.c: 84: }
 "84
-[e = *U + &U . *U _task1 5 * -> -> -> 9 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux -> -> 0 `i `uc ]
-[; ;core.c: 85: task1->reg[10]=0x00;
+[e :UE 409 ]
+}
 "85
-[e = *U + &U . *U _task1 5 * -> -> -> 10 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux -> -> 0 `i `uc ]
-[; ;core.c: 86: task1->reg[11]=0x00;
+[v _TASK_Init `(v ~T0 @X0 1 ef1`*S402 ]
 "86
+{
+[; ;core.c: 85: void TASK_Init(task* task1)
+[; ;core.c: 86: {
+[e :U _TASK_Init ]
+"85
+[v _task1 `*S402 ~T0 @X0 1 r1 ]
+"86
+[f ]
+[; ;core.c: 89: task1->reg[0]=0x00;
+"89
+[e = *U + &U . *U _task1 5 * -> -> -> 0 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux -> -> 0 `i `uc ]
+[; ;core.c: 90: task1->reg[1]=0x00;
+"90
+[e = *U + &U . *U _task1 5 * -> -> -> 1 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux -> -> 0 `i `uc ]
+[; ;core.c: 91: task1->reg[2]=0x00;
+"91
+[e = *U + &U . *U _task1 5 * -> -> -> 2 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux -> -> 0 `i `uc ]
+[; ;core.c: 92: task1->reg[3]=0x00;
+"92
+[e = *U + &U . *U _task1 5 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux -> -> 0 `i `uc ]
+[; ;core.c: 94: task1->reg[4]=0x00;
+"94
+[e = *U + &U . *U _task1 5 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux -> -> 0 `i `uc ]
+[; ;core.c: 95: task1->reg[5]=0x00;
+"95
+[e = *U + &U . *U _task1 5 * -> -> -> 5 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux -> -> 0 `i `uc ]
+[; ;core.c: 96: task1->reg[6]=0x00;
+"96
+[e = *U + &U . *U _task1 5 * -> -> -> 6 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux -> -> 0 `i `uc ]
+[; ;core.c: 97: task1->reg[7]=0x00;
+"97
+[e = *U + &U . *U _task1 5 * -> -> -> 7 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux -> -> 0 `i `uc ]
+[; ;core.c: 99: task1->reg[8]=0x00;
+"99
+[e = *U + &U . *U _task1 5 * -> -> -> 8 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux -> -> 0 `i `uc ]
+[; ;core.c: 100: task1->reg[9]=0x00;
+"100
+[e = *U + &U . *U _task1 5 * -> -> -> 9 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux -> -> 0 `i `uc ]
+[; ;core.c: 101: task1->reg[10]=0x00;
+"101
+[e = *U + &U . *U _task1 5 * -> -> -> 10 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux -> -> 0 `i `uc ]
+[; ;core.c: 102: task1->reg[11]=0x00;
+"102
 [e = *U + &U . *U _task1 5 * -> -> -> 11 `i `ui `ux -> -> # *U &U . *U _task1 5 `ui `ux -> -> 0 `i `uc ]
-[; ;core.c: 88: }
-"88
-[e :UE 407 ]
+[; ;core.c: 103: for(unsigned char i=0;i<129;i++)
+"103
+{
+[v _i `uc ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `uc ]
+[e $ < -> _i `i -> 129 `i 414  ]
+[e $U 415  ]
+"104
+[e :U 414 ]
+[; ;core.c: 104: {
+{
+[; ;core.c: 105: task1->SSRAM[i]=0x00;
+"105
+[e = *U + &U . *U _task1 6 * -> _i `ux -> -> # *U &U . *U _task1 6 `ui `ux -> -> 0 `i `uc ]
+"106
+}
+"103
+[e ++ _i -> -> 1 `i `uc ]
+[e $ < -> _i `i -> 129 `i 414  ]
+[e :U 415 ]
+"106
+}
+[; ;core.c: 106: }
+[; ;core.c: 107: Task_Empty();
+"107
+[e ( _Task_Empty ..  ]
+[; ;core.c: 109: }
+"109
+[e :UE 413 ]
 }

@@ -20,15 +20,20 @@ typedef struct _task
   unsigned char S_TOSU;
   //Save Regeister
   unsigned char reg[12];
+  unsigned char SSRAM[128];
 }task;
 
 unsigned char index=0;
 task tt[2];
+
+//
 task Task_Create(void (*)(void));
 void Task_Save(task* task1);
 void TASK_Restore(task* task1);
 void Task_Empty(void);
 void TASK_Init(task* task1);
+
+
 #ifdef	__cplusplus
 extern "C" {
 #endif

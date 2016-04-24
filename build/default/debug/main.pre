@@ -5137,10 +5137,13 @@ unsigned char S_TOSH;
 unsigned char S_TOSU;
 
 unsigned char reg[12];
+unsigned char SSRAM[128];
 }task;
 
 unsigned char index=0;
 task tt[2];
+
+
 task Task_Create(void (*)(void));
 void Task_Save(task* task1);
 void TASK_Restore(task* task1);
@@ -5154,9 +5157,13 @@ void func2()
 TRISB=0x00;
 __nop();
 __nop();
+for(int i=0;i<10000;i++)
+{
+__nop();
+}
 while(1)
 {
-PORTB=0xAC;
+PORTB=0x01;
 __nop();
 __nop();
 __nop();
@@ -5169,7 +5176,10 @@ __nop();
 __nop();
 while(1)
 {
-PORTB=0xBD;
+unsigned char bytess=0x02;
+__nop();
+__nop();
+PORTB=bytess;
 __nop();
 __nop();
 __nop();
@@ -5177,22 +5187,23 @@ __nop();
 }
 int main()
 {
+int bbytess=0x00;
 task t1;
 task t2;
 t1=Task_Create(func1);
 t2=Task_Create(func2);
 tt[0]=t1;
 tt[1]=t2;
+
 Task_Empty();
 TASK_Init(&tt[0]);
 TASK_Init(&tt[1]);
 
 index=0;
 
-
 T1CON=0B11111101;
-TMR1H=(65536-10)/256;
-TMR1L=(65536-10)%256;
+TMR1H=(65536-2)/256;
+TMR1L=(65536-2)%256;
 TMR1IF=0;
 TMR1IP=1;
 TMR1IE=1;
@@ -5202,6 +5213,7 @@ GIEH=1;
 while(1)
 {
 tt[index].func();
+bbytess+=index;
 __nop();
 }
 return 0;
@@ -5228,8 +5240,8 @@ TOSL=tt[index].S_TOSL;
 TOSU=tt[index].S_TOSU;
 tt[index].count++;
 
-TMR1H=(65536-20)/256;
-TMR1L=(65536-20)%256;
+TMR1H=(65536-5)/256;
+TMR1L=(65536-5)%256;
 TMR1IE=1;
 }
 

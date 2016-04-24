@@ -1,12 +1,12 @@
-_Task_Create: CODE, 1214 0 54
-_Task_Empty: CODE, 1268 0 50
-_main: CODE, 436 0 196
-_func1: CODE, 1394 0 16
-_TASK_Restore: CODE, 1020 0 194
-__initialization: CODE, 1368 0 16
-_func2: CODE, 1410 0 16
-_TASK_Init: CODE, 632 0 194
-_HighInt: CODE, 8 0 428
-i2_Task_Empty: CODE, 1318 0 50
-_Task_Save: CODE, 826 0 194
-Total: 1408
+_Task_Create: CODE, 1348 0 68
+_Task_Empty: CODE, 1468 0 50
+_main: CODE, 1140 0 208
+_func1: CODE, 1602 0 24
+_TASK_Restore: CODE, 650 0 250
+__initialization: CODE, 1568 0 24
+_func2: CODE, 1416 0 52
+_TASK_Init: CODE, 900 0 240
+_HighInt: CODE, 8 0 392
+i2_Task_Empty: CODE, 1518 0 50
+_Task_Save: CODE, 400 0 250
+Total: 1608

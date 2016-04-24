@@ -6,9 +6,13 @@ void func2()
    TRISB=0x00;
    NOP();
    NOP();
+   for(int i=0;i<10000;i++)
+   {
+       NOP();
+   }
    while(1)
    {
-        PORTB=0xAC;
+        PORTB=0x01;
         NOP();
         NOP();
         NOP();
@@ -21,7 +25,10 @@ void func1()
     NOP();
     while(1)
     {
-        PORTB=0xBD;
+        unsigned char bytess=0x02;
+        NOP();
+        NOP();
+        PORTB=bytess;
         NOP();
         NOP();
         NOP();
@@ -29,6 +36,7 @@ void func1()
 }
 int main()
 {
+    int bbytess=0x00;
     task t1;
     task t2;
     t1=Task_Create(func1);
@@ -43,17 +51,18 @@ int main()
     index=0;
     //timer imtrrupt init
     T1CON=0B11111101;
-    TMR1H=(65536-10)/256;
-    TMR1L=(65536-10)%256;
+    TMR1H=(65536-2)/256;
+    TMR1L=(65536-2)%256;
     TMR1IF=0;
     TMR1IP=1;
     TMR1IE=1;
     IPEN=1;
     GIEH=1;
-    //t1.func();;
+    //t1.func();;*/
     while(1)
     {
         tt[index].func();
+        bbytess+=index;
         NOP();
     }
     return 0;
@@ -80,8 +89,8 @@ void interrupt  HighInt()
        TOSU=tt[index].S_TOSU;
        tt[index].count++;
        // TMR1IE=0;
-       TMR1H=(65536-20)/256;
-       TMR1L=(65536-20)%256;
+       TMR1H=(65536-5)/256;
+       TMR1L=(65536-5)%256;
        TMR1IE=1;
     }
 

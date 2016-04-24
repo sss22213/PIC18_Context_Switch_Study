@@ -5006,10 +5006,13 @@ unsigned char S_TOSH;
 unsigned char S_TOSU;
 
 unsigned char reg[12];
+unsigned char SSRAM[128];
 }task;
 
 unsigned char index=0;
 task tt[2];
+
+
 task Task_Create(void (*)(void));
 void Task_Save(task* task1);
 void TASK_Restore(task* task1);
@@ -5047,6 +5050,12 @@ LATD=0x00;
 void Task_Save(task* task1)
 {
 
+# 35
+for(unsigned char j=0x00;j<0x7F;j++)
+{
+task1->SSRAM[j]=*(unsigned char*)(0x00+j);
+}
+
 
 task1->reg[0]=TRISA;
 task1->reg[1]=TRISB;
@@ -5066,7 +5075,12 @@ task1->reg[11]=LATD;
 void TASK_Restore(task* task1)
 {
 
+for(unsigned char j=0x00;j<0x7F;j++)
+{
+*(unsigned char*)(0x00+j)=task1->SSRAM[j];
+}
 
+# 68
 TRISA=task1->reg[0];
 TRISB=task1->reg[1];
 TRISC=task1->reg[2];
@@ -5102,6 +5116,11 @@ task1->reg[8]=0x00;
 task1->reg[9]=0x00;
 task1->reg[10]=0x00;
 task1->reg[11]=0x00;
+for(unsigned char i=0;i<129;i++)
+{
+task1->SSRAM[i]=0x00;
+}
+Task_Empty();
 
 }
 

@@ -1,8 +1,8 @@
 Version 3.2 HI-TECH Software Intermediate Code
 [v F4323 `(v ~T0 @X0 0 tf ]
 "12 core.h
-[s S407 `*F4323 1 `ui 1 `uc 1 `uc 1 `uc 1 `uc -> 12 `i ]
-[n S407 _task func count S_TOSL S_TOSH S_TOSU reg ]
+[s S407 `*F4323 1 `ui 1 `uc 1 `uc 1 `uc 1 `uc -> 12 `i `uc -> 128 `i ]
+[n S407 _task func count S_TOSL S_TOSH S_TOSU reg SSRAM ]
 "1949 C:\Program Files (x86)\Microchip\xc8\v1.33\include\pic18f4520.h
 [v _TRISB `Vuc ~T0 @X0 0 e@3987 ]
 "42 C:\Program Files (x86)\Microchip\xc8\v1.33\include\pic18.h
@@ -11,12 +11,12 @@ Version 3.2 HI-TECH Software Intermediate Code
 "267 C:\Program Files (x86)\Microchip\xc8\v1.33\include\pic18f4520.h
 [v _PORTB `Vuc ~T0 @X0 0 e@3969 ]
 [p mainexit ]
-[v F4335 `(v ~T0 @X0 0 tf ]
-"27 core.h
-[v _Task_Create `(S407 ~T0 @X0 0 ef1`*F4335 ]
-"30
+[v F4336 `(v ~T0 @X0 0 tf ]
+"30 core.h
+[v _Task_Create `(S407 ~T0 @X0 0 ef1`*F4336 ]
+"33
 [v _Task_Empty `(v ~T0 @X0 0 ef ]
-"31
+"34
 [v _TASK_Init `(v ~T0 @X0 0 ef1`*S407 ]
 "5816 C:\Program Files (x86)\Microchip\xc8\v1.33\include\pic18f4520.h
 [v _T1CON `Vuc ~T0 @X0 0 e@4045 ]
@@ -34,7 +34,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _IPEN `Vb ~T0 @X0 0 e@32391 ]
 "7545
 [v _GIEH `Vb ~T0 @X0 0 e@32663 ]
-"28 core.h
+"31 core.h
 [v _Task_Save `(v ~T0 @X0 0 ef1`*S407 ]
 "7245 C:\Program Files (x86)\Microchip\xc8\v1.33\include\pic18f4520.h
 [v _TOSL `Vuc ~T0 @X0 0 e@4093 ]
@@ -42,7 +42,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _TOSH `Vuc ~T0 @X0 0 e@4094 ]
 "7257
 [v _TOSU `Vuc ~T0 @X0 0 e@4095 ]
-"29 core.h
+"32 core.h
 [v _TASK_Restore `(v ~T0 @X0 0 ef1`*S407 ]
 [; ;htc.h: 21: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 24: extern void __builtin_software_breakpoint(void);
@@ -3887,21 +3887,22 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;core.h: 19: unsigned char S_TOSH;
 [; ;core.h: 20: unsigned char S_TOSU;
 [; ;core.h: 22: unsigned char reg[12];
-[; ;core.h: 23: }task;
-"25 core.h
+[; ;core.h: 23: unsigned char SSRAM[128];
+[; ;core.h: 24: }task;
+"26 core.h
 [v _index `uc ~T0 @X0 1 e ]
 [i _index
 -> -> 0 `i `uc
 ]
-[; ;core.h: 25: unsigned char index=0;
-"26
+[; ;core.h: 26: unsigned char index=0;
+"27
 [v _tt `S407 ~T0 @X0 -> 2 `i e ]
-[; ;core.h: 26: task tt[2];
-[; ;core.h: 27: task Task_Create(void (*)(void));
-[; ;core.h: 28: void Task_Save(task* task1);
-[; ;core.h: 29: void TASK_Restore(task* task1);
-[; ;core.h: 30: void Task_Empty(void);
-[; ;core.h: 31: void TASK_Init(task* task1);
+[; ;core.h: 27: task tt[2];
+[; ;core.h: 30: task Task_Create(void (*)(void));
+[; ;core.h: 31: void Task_Save(task* task1);
+[; ;core.h: 32: void TASK_Restore(task* task1);
+[; ;core.h: 33: void Task_Empty(void);
+[; ;core.h: 34: void TASK_Init(task* task1);
 "3 main.c
 [v _Stack_Sav `uc ~T0 @X0 1 e ]
 [; ;main.c: 3: unsigned char Stack_Sav;
@@ -3922,241 +3923,281 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 8: __nop();
 "8
 [e ( ___nop ..  ]
-[; ;main.c: 9: while(1)
+[; ;main.c: 9: for(int i=0;i<10000;i++)
 "9
-[e :U 410 ]
-[; ;main.c: 10: {
-"10
 {
-[; ;main.c: 11: PORTB=0xAC;
-"11
-[e = _PORTB -> -> 172 `i `uc ]
-[; ;main.c: 12: __nop();
-"12
-[e ( ___nop ..  ]
-[; ;main.c: 13: __nop();
-"13
-[e ( ___nop ..  ]
-[; ;main.c: 14: __nop();
-"14
-[e ( ___nop ..  ]
-"15
-}
-[e :U 409 ]
-"9
+[v _i `i ~T0 @X0 1 a ]
+[e = _i -> 0 `i ]
+[e $ < _i -> 10000 `i 409  ]
 [e $U 410  ]
-[e :U 411 ]
-[; ;main.c: 15: }
-[; ;main.c: 16: }
+"10
+[e :U 409 ]
+[; ;main.c: 10: {
+{
+[; ;main.c: 11: __nop();
+"11
+[e ( ___nop ..  ]
+"12
+}
+"9
+[e ++ _i -> 1 `i ]
+[e $ < _i -> 10000 `i 409  ]
+[e :U 410 ]
+"12
+}
+[; ;main.c: 12: }
+[; ;main.c: 13: while(1)
+"13
+[e :U 413 ]
+[; ;main.c: 14: {
+"14
+{
+[; ;main.c: 15: PORTB=0x01;
+"15
+[e = _PORTB -> -> 1 `i `uc ]
+[; ;main.c: 16: __nop();
 "16
+[e ( ___nop ..  ]
+[; ;main.c: 17: __nop();
+"17
+[e ( ___nop ..  ]
+[; ;main.c: 18: __nop();
+"18
+[e ( ___nop ..  ]
+"19
+}
+[e :U 412 ]
+"13
+[e $U 413  ]
+[e :U 414 ]
+[; ;main.c: 19: }
+[; ;main.c: 20: }
+"20
 [e :UE 408 ]
 }
-"17
+"21
 [v _func1 `(v ~T0 @X0 1 ef ]
-"18
+"22
 {
-[; ;main.c: 17: void func1()
-[; ;main.c: 18: {
+[; ;main.c: 21: void func1()
+[; ;main.c: 22: {
 [e :U _func1 ]
 [f ]
-[; ;main.c: 19: TRISB=0x00;
-"19
-[e = _TRISB -> -> 0 `i `uc ]
-[; ;main.c: 20: __nop();
-"20
-[e ( ___nop ..  ]
-[; ;main.c: 21: __nop();
-"21
-[e ( ___nop ..  ]
-[; ;main.c: 22: while(1)
-"22
-[e :U 414 ]
-[; ;main.c: 23: {
+[; ;main.c: 23: TRISB=0x00;
 "23
-{
-[; ;main.c: 24: PORTB=0xBD;
+[e = _TRISB -> -> 0 `i `uc ]
+[; ;main.c: 24: __nop();
 "24
-[e = _PORTB -> -> 189 `i `uc ]
+[e ( ___nop ..  ]
 [; ;main.c: 25: __nop();
 "25
 [e ( ___nop ..  ]
-[; ;main.c: 26: __nop();
+[; ;main.c: 26: while(1)
 "26
-[e ( ___nop ..  ]
-[; ;main.c: 27: __nop();
+[e :U 417 ]
+[; ;main.c: 27: {
 "27
-[e ( ___nop ..  ]
-"28
-}
-[e :U 413 ]
-"22
-[e $U 414  ]
-[e :U 415 ]
-[; ;main.c: 28: }
-[; ;main.c: 29: }
-"29
-[e :UE 412 ]
-}
-"30
-[v _main `(i ~T0 @X0 1 ef ]
-"31
 {
-[; ;main.c: 30: int main()
-[; ;main.c: 31: {
+"28
+[v _bytess `uc ~T0 @X0 1 a ]
+[; ;main.c: 28: unsigned char bytess=0x02;
+[e = _bytess -> -> 2 `i `uc ]
+[; ;main.c: 29: __nop();
+"29
+[e ( ___nop ..  ]
+[; ;main.c: 30: __nop();
+"30
+[e ( ___nop ..  ]
+[; ;main.c: 31: PORTB=bytess;
+"31
+[e = _PORTB _bytess ]
+[; ;main.c: 32: __nop();
+"32
+[e ( ___nop ..  ]
+[; ;main.c: 33: __nop();
+"33
+[e ( ___nop ..  ]
+[; ;main.c: 34: __nop();
+"34
+[e ( ___nop ..  ]
+"35
+}
+[e :U 416 ]
+"26
+[e $U 417  ]
+[e :U 418 ]
+[; ;main.c: 35: }
+[; ;main.c: 36: }
+"36
+[e :UE 415 ]
+}
+"37
+[v _main `(i ~T0 @X0 1 ef ]
+"38
+{
+[; ;main.c: 37: int main()
+[; ;main.c: 38: {
 [e :U _main ]
 [f ]
-"32
-[v _t1 `S407 ~T0 @X0 1 a ]
-"33
-[v _t2 `S407 ~T0 @X0 1 a ]
-[; ;main.c: 32: task t1;
-[; ;main.c: 33: task t2;
-[; ;main.c: 34: t1=Task_Create(func1);
-"34
-[e = _t1 ( _Task_Create (1 &U _func1 ]
-[; ;main.c: 35: t2=Task_Create(func2);
-"35
-[e = _t2 ( _Task_Create (1 &U _func2 ]
-[; ;main.c: 36: tt[0]=t1;
-"36
-[e = *U + &U _tt * -> -> -> 0 `i `ui `ux -> -> # *U &U _tt `ui `ux _t1 ]
-[; ;main.c: 37: tt[1]=t2;
-"37
-[e = *U + &U _tt * -> -> -> 1 `i `ui `ux -> -> # *U &U _tt `ui `ux _t2 ]
-[; ;main.c: 38: Task_Empty();
-"38
-[e ( _Task_Empty ..  ]
-[; ;main.c: 39: TASK_Init(&tt[0]);
 "39
-[e ( _TASK_Init (1 &U *U + &U _tt * -> -> -> 0 `i `ui `ux -> -> # *U &U _tt `ui `ux ]
-[; ;main.c: 40: TASK_Init(&tt[1]);
+[v _bbytess `i ~T0 @X0 1 a ]
+[; ;main.c: 39: int bbytess=0x00;
+[e = _bbytess -> 0 `i ]
 "40
-[e ( _TASK_Init (1 &U *U + &U _tt * -> -> -> 1 `i `ui `ux -> -> # *U &U _tt `ui `ux ]
-[; ;main.c: 42: index=0;
+[v _t1 `S407 ~T0 @X0 1 a ]
+"41
+[v _t2 `S407 ~T0 @X0 1 a ]
+[; ;main.c: 40: task t1;
+[; ;main.c: 41: task t2;
+[; ;main.c: 42: t1=Task_Create(func1);
 "42
-[e = _index -> -> 0 `i `uc ]
-[; ;main.c: 45: T1CON=0B11111101;
+[e = _t1 ( _Task_Create (1 &U _func1 ]
+[; ;main.c: 43: t2=Task_Create(func2);
+"43
+[e = _t2 ( _Task_Create (1 &U _func2 ]
+[; ;main.c: 44: tt[0]=t1;
+"44
+[e = *U + &U _tt * -> -> -> 0 `i `ui `ux -> -> # *U &U _tt `ui `ux _t1 ]
+[; ;main.c: 45: tt[1]=t2;
 "45
-[e = _T1CON -> -> 253 `i `uc ]
-[; ;main.c: 46: TMR1H=(65536-10)/256;
-"46
-[e = _TMR1H -> / - -> 65536 `l -> -> 10 `i `l -> -> 256 `i `l `uc ]
-[; ;main.c: 47: TMR1L=(65536-10)%256;
+[e = *U + &U _tt * -> -> -> 1 `i `ui `ux -> -> # *U &U _tt `ui `ux _t2 ]
+[; ;main.c: 47: Task_Empty();
 "47
-[e = _TMR1L -> % - -> 65536 `l -> -> 10 `i `l -> -> 256 `i `l `uc ]
-[; ;main.c: 48: TMR1IF=0;
+[e ( _Task_Empty ..  ]
+[; ;main.c: 48: TASK_Init(&tt[0]);
 "48
-[e = _TMR1IF -> -> 0 `i `b ]
-[; ;main.c: 49: TMR1IP=1;
+[e ( _TASK_Init (1 &U *U + &U _tt * -> -> -> 0 `i `ui `ux -> -> # *U &U _tt `ui `ux ]
+[; ;main.c: 49: TASK_Init(&tt[1]);
 "49
-[e = _TMR1IP -> -> 1 `i `b ]
-[; ;main.c: 50: TMR1IE=1;
-"50
-[e = _TMR1IE -> -> 1 `i `b ]
-[; ;main.c: 51: IPEN=1;
+[e ( _TASK_Init (1 &U *U + &U _tt * -> -> -> 1 `i `ui `ux -> -> # *U &U _tt `ui `ux ]
+[; ;main.c: 51: index=0;
 "51
-[e = _IPEN -> -> 1 `i `b ]
-[; ;main.c: 52: GIEH=1;
-"52
-[e = _GIEH -> -> 1 `i `b ]
-[; ;main.c: 54: while(1)
+[e = _index -> -> 0 `i `uc ]
+[; ;main.c: 53: T1CON=0B11111101;
+"53
+[e = _T1CON -> -> 253 `i `uc ]
+[; ;main.c: 54: TMR1H=(65536-2)/256;
 "54
-[e :U 418 ]
-[; ;main.c: 55: {
+[e = _TMR1H -> / - -> 65536 `l -> -> 2 `i `l -> -> 256 `i `l `uc ]
+[; ;main.c: 55: TMR1L=(65536-2)%256;
 "55
-{
-[; ;main.c: 56: tt[index].func();
+[e = _TMR1L -> % - -> 65536 `l -> -> 2 `i `l -> -> 256 `i `l `uc ]
+[; ;main.c: 56: TMR1IF=0;
 "56
-[e ( *U . *U + &U _tt * -> _index `ux -> -> # *U &U _tt `ui `ux 0 ..  ]
-[; ;main.c: 57: __nop();
+[e = _TMR1IF -> -> 0 `i `b ]
+[; ;main.c: 57: TMR1IP=1;
 "57
-[e ( ___nop ..  ]
+[e = _TMR1IP -> -> 1 `i `b ]
+[; ;main.c: 58: TMR1IE=1;
 "58
-}
-[e :U 417 ]
-"54
-[e $U 418  ]
-[e :U 419 ]
-[; ;main.c: 58: }
-[; ;main.c: 59: return 0;
+[e = _TMR1IE -> -> 1 `i `b ]
+[; ;main.c: 59: IPEN=1;
 "59
-[e ) -> 0 `i ]
-[e $UE 416  ]
-[; ;main.c: 60: }
+[e = _IPEN -> -> 1 `i `b ]
+[; ;main.c: 60: GIEH=1;
 "60
-[e :UE 416 ]
-}
-[v F4355 `(v ~T0 @X0 1 tf ]
+[e = _GIEH -> -> 1 `i `b ]
+[; ;main.c: 62: while(1)
 "62
-[v _HighInt `IF4355 ~T0 @X0 1 e ]
+[e :U 421 ]
+[; ;main.c: 63: {
 "63
 {
-[; ;main.c: 62: void interrupt HighInt()
-[; ;main.c: 63: {
+[; ;main.c: 64: tt[index].func();
+"64
+[e ( *U . *U + &U _tt * -> _index `ux -> -> # *U &U _tt `ui `ux 0 ..  ]
+[; ;main.c: 65: bbytess+=index;
+"65
+[e =+ _bbytess -> _index `i ]
+[; ;main.c: 66: __nop();
+"66
+[e ( ___nop ..  ]
+"67
+}
+[e :U 420 ]
+"62
+[e $U 421  ]
+[e :U 422 ]
+[; ;main.c: 67: }
+[; ;main.c: 68: return 0;
+"68
+[e ) -> 0 `i ]
+[e $UE 419  ]
+[; ;main.c: 69: }
+"69
+[e :UE 419 ]
+}
+[v F4359 `(v ~T0 @X0 1 tf ]
+"71
+[v _HighInt `IF4359 ~T0 @X0 1 e ]
+"72
+{
+[; ;main.c: 71: void interrupt HighInt()
+[; ;main.c: 72: {
 [e :U _HighInt ]
 [f ]
-[; ;main.c: 64: if(TMR1IE && TMR1IF)
-"64
-[e $ ! && _TMR1IE _TMR1IF 421  ]
-[; ;main.c: 65: {
-"65
-{
-[; ;main.c: 66: TMR1IE=0;
-"66
-[e = _TMR1IE -> -> 0 `i `b ]
-[; ;main.c: 67: TMR1IF=0;
-"67
-[e = _TMR1IF -> -> 0 `i `b ]
-[; ;main.c: 68: Task_Save(&tt[index]);
-"68
-[e ( _Task_Save (1 &U *U + &U _tt * -> _index `ux -> -> # *U &U _tt `ui `ux ]
-[; ;main.c: 70: Task_Empty();
-"70
-[e ( _Task_Empty ..  ]
-[; ;main.c: 72: tt[index].S_TOSL=TOSL;
-"72
-[e = . *U + &U _tt * -> _index `ux -> -> # *U &U _tt `ui `ux 2 _TOSL ]
-[; ;main.c: 73: tt[index].S_TOSH=TOSH;
+[; ;main.c: 73: if(TMR1IE && TMR1IF)
 "73
-[e = . *U + &U _tt * -> _index `ux -> -> # *U &U _tt `ui `ux 3 _TOSH ]
-[; ;main.c: 74: tt[index].S_TOSU=TOSU;
+[e $ ! && _TMR1IE _TMR1IF 424  ]
+[; ;main.c: 74: {
 "74
-[e = . *U + &U _tt * -> _index `ux -> -> # *U &U _tt `ui `ux 4 _TOSU ]
-[; ;main.c: 75: index++;
+{
+[; ;main.c: 75: TMR1IE=0;
 "75
-[e ++ _index -> -> 1 `i `uc ]
-[; ;main.c: 76: index=index%2;
+[e = _TMR1IE -> -> 0 `i `b ]
+[; ;main.c: 76: TMR1IF=0;
 "76
-[e = _index -> % -> _index `i -> 2 `i `uc ]
-[; ;main.c: 77: TASK_Restore(&tt[index]);
+[e = _TMR1IF -> -> 0 `i `b ]
+[; ;main.c: 77: Task_Save(&tt[index]);
 "77
-[e ( _TASK_Restore (1 &U *U + &U _tt * -> _index `ux -> -> # *U &U _tt `ui `ux ]
-[; ;main.c: 78: TOSH=tt[index].S_TOSH;
-"78
-[e = _TOSH . *U + &U _tt * -> _index `ux -> -> # *U &U _tt `ui `ux 3 ]
-[; ;main.c: 79: TOSL=tt[index].S_TOSL;
+[e ( _Task_Save (1 &U *U + &U _tt * -> _index `ux -> -> # *U &U _tt `ui `ux ]
+[; ;main.c: 79: Task_Empty();
 "79
-[e = _TOSL . *U + &U _tt * -> _index `ux -> -> # *U &U _tt `ui `ux 2 ]
-[; ;main.c: 80: TOSU=tt[index].S_TOSU;
-"80
-[e = _TOSU . *U + &U _tt * -> _index `ux -> -> # *U &U _tt `ui `ux 4 ]
-[; ;main.c: 81: tt[index].count++;
+[e ( _Task_Empty ..  ]
+[; ;main.c: 81: tt[index].S_TOSL=TOSL;
 "81
-[e ++ . *U + &U _tt * -> _index `ux -> -> # *U &U _tt `ui `ux 1 -> -> 1 `i `ui ]
-[; ;main.c: 83: TMR1H=(65536-20)/256;
+[e = . *U + &U _tt * -> _index `ux -> -> # *U &U _tt `ui `ux 2 _TOSL ]
+[; ;main.c: 82: tt[index].S_TOSH=TOSH;
+"82
+[e = . *U + &U _tt * -> _index `ux -> -> # *U &U _tt `ui `ux 3 _TOSH ]
+[; ;main.c: 83: tt[index].S_TOSU=TOSU;
 "83
-[e = _TMR1H -> / - -> 65536 `l -> -> 20 `i `l -> -> 256 `i `l `uc ]
-[; ;main.c: 84: TMR1L=(65536-20)%256;
+[e = . *U + &U _tt * -> _index `ux -> -> # *U &U _tt `ui `ux 4 _TOSU ]
+[; ;main.c: 84: index++;
 "84
-[e = _TMR1L -> % - -> 65536 `l -> -> 20 `i `l -> -> 256 `i `l `uc ]
-[; ;main.c: 85: TMR1IE=1;
+[e ++ _index -> -> 1 `i `uc ]
+[; ;main.c: 85: index=index%2;
 "85
-[e = _TMR1IE -> -> 1 `i `b ]
+[e = _index -> % -> _index `i -> 2 `i `uc ]
+[; ;main.c: 86: TASK_Restore(&tt[index]);
 "86
-}
-[e :U 421 ]
-[; ;main.c: 86: }
-[; ;main.c: 88: }
+[e ( _TASK_Restore (1 &U *U + &U _tt * -> _index `ux -> -> # *U &U _tt `ui `ux ]
+[; ;main.c: 87: TOSH=tt[index].S_TOSH;
+"87
+[e = _TOSH . *U + &U _tt * -> _index `ux -> -> # *U &U _tt `ui `ux 3 ]
+[; ;main.c: 88: TOSL=tt[index].S_TOSL;
 "88
-[e :UE 420 ]
+[e = _TOSL . *U + &U _tt * -> _index `ux -> -> # *U &U _tt `ui `ux 2 ]
+[; ;main.c: 89: TOSU=tt[index].S_TOSU;
+"89
+[e = _TOSU . *U + &U _tt * -> _index `ux -> -> # *U &U _tt `ui `ux 4 ]
+[; ;main.c: 90: tt[index].count++;
+"90
+[e ++ . *U + &U _tt * -> _index `ux -> -> # *U &U _tt `ui `ux 1 -> -> 1 `i `ui ]
+[; ;main.c: 92: TMR1H=(65536-5)/256;
+"92
+[e = _TMR1H -> / - -> 65536 `l -> -> 5 `i `l -> -> 256 `i `l `uc ]
+[; ;main.c: 93: TMR1L=(65536-5)%256;
+"93
+[e = _TMR1L -> % - -> 65536 `l -> -> 5 `i `l -> -> 256 `i `l `uc ]
+[; ;main.c: 94: TMR1IE=1;
+"94
+[e = _TMR1IE -> -> 1 `i `b ]
+"95
+}
+[e :U 424 ]
+[; ;main.c: 95: }
+[; ;main.c: 97: }
+"97
+[e :UE 423 ]
 }

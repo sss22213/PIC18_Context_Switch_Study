@@ -29,6 +29,14 @@ void Task_Empty()
 void Task_Save(task* task1)
 {
     //Save GPIO Register
+/*#asm
+    MOVWF   0x20
+#endasm*/
+    for(unsigned char j=0x00;j<0x7F;j++)
+    {
+        task1->SSRAM[j]=*(unsigned char*)(0x00+j);
+    }
+   
     //TRISX
     task1->reg[0]=TRISA;
     task1->reg[1]=TRISB;
@@ -48,6 +56,14 @@ void Task_Save(task* task1)
 void TASK_Restore(task* task1)
 {
     //Restore GPIO Register
+    for(unsigned char j=0x00;j<0x7F;j++)
+    {
+        *(unsigned char*)(0x00+j)=task1->SSRAM[j];
+    }
+  
+    /**#asm
+        MOVWF   0x20
+    #endasm*/
     //TRISX
     TRISA=task1->reg[0];
     TRISB=task1->reg[1];
@@ -84,6 +100,10 @@ void TASK_Init(task* task1)
     task1->reg[9]=0x00;
     task1->reg[10]=0x00;
     task1->reg[11]=0x00;
+    for(unsigned char i=0;i<129;i++)
+    {
+        task1->SSRAM[i]=0x00;
+    }
     Task_Empty();
 
 }
